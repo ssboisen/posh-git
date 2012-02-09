@@ -14,8 +14,15 @@ function prompt {
 
     # Reset color, which can be messed up by Enable-GitColors
     $Host.UI.RawUI.ForegroundColor = $GitPromptSettings.DefaultForegroundColor
+    $m = 45 # maximum prompt length
+    $str = $pwd.Path
 
-    Write-Host $pwd -nonewline -ForegroundColor "magenta"
+    if ($str.length -ge $m)
+    {
+        $str = "..." + $str.substring($str.length - $m + 4)
+    }
+
+    Write-Host $str -nonewline -ForegroundColor "magenta"
 
     Write-VcsStatus
 

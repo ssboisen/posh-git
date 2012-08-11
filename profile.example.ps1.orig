@@ -26,8 +26,12 @@ function prompt {
 
     Write-VcsStatus
 
-    $global:LASTEXITCODE = $realLASTEXITCODE
+<<<<<<< HEAD
+    $LASTEXITCODE = $realLASTEXITCODE
     Write-Host
+=======
+    $global:LASTEXITCODE = $realLASTEXITCODE
+>>>>>>> 48728fcf14d6baaf148bc7bfc475e911974857ed
     return "> "
 }
 

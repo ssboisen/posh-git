@@ -42,7 +42,7 @@ $global:GitPromptSettings = New-Object PSObject -Property @{
     
     AutoRefreshIndex          = $true
 
-    EnablePromptStatus        = !$GitMissing
+    EnablePromptStatus        = !$Global:GitMissing
     EnableFileStatus          = $true
     RepositoriesInWhichToDisableFileStatus = @( ) # Array of repository paths
 
@@ -78,7 +78,7 @@ function Write-GitStatus($status) {
         }
         
         if($s.EnableFileStatus -and $status.HasIndex) {
-            write-host $s.BeforeIndexText -NoNewLine -BackgroundColor $s.BeforeIndexBackgroundColor -ForegroundColor $s.BeforeIndexForegroundColor
+            Write-Prompt $s.BeforeIndexText -NoNewLine -BackgroundColor $s.BeforeIndexBackgroundColor -ForegroundColor $s.BeforeIndexForegroundColor
             
             if($s.ShowStatusWhenZero -or $status.Index.Added) {
               Write-Prompt " +$($status.Index.Added.Count)" -NoNewline -BackgroundColor $s.IndexBackgroundColor -ForegroundColor $s.IndexForegroundColor
@@ -123,7 +123,9 @@ function Write-GitStatus($status) {
     }
 }
 
-if (!$Global:VcsPromptStatuses) { $Global:VcsPromptStatuses = @() }
+if((Get-Variable -Scope Global -Name VcsPromptStatuses -ErrorAction SilentlyContinue) -eq $null) {
+    $Global:VcsPromptStatuses = @()
+}
 function Global:Write-VcsStatus { $Global:VcsPromptStatuses | foreach { & $_ } }
 
 # Add scriptblock that will execute for Write-VcsStatus
